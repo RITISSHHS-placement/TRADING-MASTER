@@ -13,21 +13,6 @@
 bash setup-github.sh
 ```
 
-This script will:
-1. Initialize git
-2. Create your GitHub repo (public or private)
-3. Push all code
-4. Enable GitHub Pages for the frontend
-5. Print the exact secrets you need to add
-
-After running it, your app lives permanently at:
-```
-https://<your-username>.github.io/<repo-name>/
-```
-**No domain needed. No hosting bills. Always accessible.**
-
----
-
 ## 🗂 Project Structure
 
 ```
@@ -77,121 +62,8 @@ tradepro/
 
 ---
 
-## 🚀 Step-by-Step Deployment
 
-### STEP 1 — Run setup script
 
-```bash
-bash setup-github.sh
-```
-
-You'll be asked for your GitHub username and a repo name.  
-The script uses the **GitHub CLI** (`gh`). Install it first if needed:
-
-```bash
-# macOS
-brew install gh
-
-# Windows (winget)
-winget install GitHub.cli
-
-# Ubuntu/Debian
-sudo apt install gh
-```
-
----
-
-### STEP 2 — Deploy Backend (Railway — free tier)
-
-1. Go to **https://railway.app** → Sign up with GitHub (free)
-2. **New Project** → **Deploy from GitHub repo** → select `tradepro`
-3. Choose the `backend/` folder as the root
-4. Railway detects the Dockerfile automatically
-5. Click **Add Plugin** → **PostgreSQL** (free, auto-connected)
-6. Under **Variables**, add:
-
-| Variable | Value |
-|----------|-------|
-| `SPRING_PROFILES_ACTIVE` | `prod` |
-| `JWT_SECRET` | any 64-char random string |
-| `CORS_ORIGINS` | `https://<you>.github.io` |
-| `TOTP_ISSUER` | `TradePro` |
-
-Railway auto-sets `DATABASE_URL`, `DB_USERNAME`, `DB_PASSWORD` from the plugin.
-
-7. Copy your Railway **public URL** (e.g. `https://tradepro-backend.up.railway.app`)
-
----
-
-### STEP 3 — Add GitHub Actions Secrets
-
-Go to:  
-`https://github.com/<you>/<repo>/settings/secrets/actions`
-
-Add these secrets:
-
-| Secret | Value |
-|--------|-------|
-| `RAILWAY_TOKEN` | From https://railway.app/account/tokens |
-| `VITE_API_URL` | `https://tradepro-backend.up.railway.app/api` |
-
----
-
-### STEP 4 — Push code → Everything deploys automatically
-
-```bash
-git add -A
-git commit -m "your message"
-git push
-```
-
-GitHub Actions will:
-- ✅ Build the Spring Boot JAR
-- ✅ Build the React app (with your Railway API URL baked in)
-- ✅ Deploy frontend to **GitHub Pages**
-- ✅ Deploy backend to **Railway**
-
----
-
-## 🌐 Your URLs (permanent, no domain needed)
-
-| | URL |
-|--|-----|
-| **Frontend** | `https://<username>.github.io/<repo-name>/` |
-| **Backend API** | `https://<project>.up.railway.app/api/` |
-| **Health check** | `https://<project>.up.railway.app/api/health` |
-| **GitHub Actions** | `https://github.com/<you>/<repo>/actions` |
-
----
-
-## 💻 Local Development
-
-### Backend only (H2 in-memory DB, no setup needed)
-```bash
-cd backend
-mvn spring-boot:run
-# → http://localhost:8080
-# → http://localhost:8080/h2-console  (DB browser)
-```
-
-### Frontend only
-```bash
-cd frontend
-npm install
-npm run dev
-# → http://localhost:3000
-# Vite proxies /api → localhost:8080 automatically
-```
-
-### Full stack with Docker
-```bash
-docker-compose up --build
-# Frontend → http://localhost:3000
-# Backend  → http://localhost:8080
-# Postgres → localhost:5432
-```
-
----
 
 ## 🔑 API Reference
 
@@ -255,13 +127,6 @@ GET    /api/trades/pnl/{userId}      Total P&L
 
 ---
 
-## ❓ FAQ
-
-**Q: Will GitHub Pages always be accessible?**  
-A: Yes. GitHub Pages is free and permanent as long as your repo exists. The URL never changes.
-
-**Q: Does Railway stay free?**  
-A: Railway's free tier gives $5/month credit which covers a small backend. For production, upgrade or switch to Render (also has a free tier via `render.yaml`).
 
 **Q: How do I update the app?**  
 A: Just `git push`. GitHub Actions handles the rest automatically.
