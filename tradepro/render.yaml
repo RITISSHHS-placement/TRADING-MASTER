@@ -1,5 +1,4 @@
-# render.yaml — Deploy everything to Render.com with one click
-# https://render.com/docs/blueprint-spec
+
 
 services:
   # ── Spring Boot Backend ──
