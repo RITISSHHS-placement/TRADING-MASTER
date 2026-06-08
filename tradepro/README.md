@@ -117,10 +117,3 @@ GET    /api/trades/pnl/{userId}      Total P&L
 | **CI/CD** | GitHub Actions |
 
 ---
-
-
-**Q: How do I update the app?**  
-A: Just `git push`. GitHub Actions handles the rest automatically.
-
-**Q: Can I use a custom domain?**  
-A: Yes — in your repo Settings → Pages → Custom domain. But the default `github.io` URL always works too.
